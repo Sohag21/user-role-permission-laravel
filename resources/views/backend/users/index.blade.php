@@ -1,0 +1,85 @@
+<x-admin-layout>
+    <div class="card mx-3 p-2">
+        <div class="d-flex align-items-center">
+            <div class="mr-auto p-2">
+                <h3 class="card-title">All Users</h3>
+            </div>
+            <div class="p-2">
+                <form method="POST" action="">
+                    <div class="d-flex align-items-center">
+                        <input type="text" class="d-inline-block form-control" id="name" name="name"
+                            placeholder="Search">
+                        <button type="submit" class="btn ml-1 btn-outline-primary d-inline-block">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card mx-2">
+                <div class="card-body px-3 py-4">
+                    <table class="table table-sm table-hover">
+                        <thead>
+                            <tr>
+                                <th style="width: 100px">#</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($users as $user)
+                                <tr>
+                                    <td>{{ $user->id }}</td>
+                                    <td class="text-capitalize">{{ $user->name }}</td>
+                                    <td class="text-capitalize">{{ $user->email }}</td>
+
+                                    <td class="text-center">
+                                        <a href="{{route('admin.users.show', $user->id)}}" class="btn badge-pill btn-xs btn-outline-primary"><i
+                                                class="fa fa-pen mr-1"></i>Roles</a>
+                                        <form class="d-inline-block" method="POST"
+                                            action="{{ route('admin.users.destroy', $user->id) }}"
+                                            onsubmit="return confirm('Are you sure?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                class="btn badge-pill btn-xs btn-outline-danger mx-2">
+                                                <i class="fa fa-trash mr-1"></i>Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+            </div>
+        </div>
+        </div>
+    </section>
+</x-admin-layout>
+<script>
+    @if (Session::has('message'))
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true
+        }
+        toastr.success("{{ session('message') }}");
+    @endif
+    @if (Session::has('info'))
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true
+        }
+        toastr.info("{{ session('info') }}");
+    @endif
+    @if (Session::has('error'))
+        toastr.options = {
+            "closeButton": true,
+            "progressBar": true
+        }
+        toastr.error("{{ session('error') }}");
+    @endif
+</script>
